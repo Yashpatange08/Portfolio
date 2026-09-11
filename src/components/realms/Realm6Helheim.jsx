@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import { Mail, Send, Copy, Check, ArrowUp, Compass, Wind, Skull } from 'lucide-react';
-import { GithubIcon, LinkedinIcon, InstagramIcon } from '../icons/BrandIcons';
+import { Mail, Send, Copy, Check, ArrowUp, Wind, Phone, MessageSquare, ExternalLink } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '../icons/BrandIcons';
 
 export default function Realm6Helheim({ onScrollToTop }) {
-  const [copied, setCopied] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
 
   const contactEmail = 'yashpatange08@gmail.com';
+  const contactPhone = '+91-8180824463';
 
-  const handleCopy = () => {
+  const handleCopyEmail = () => {
     navigator.clipboard.writeText(contactEmail);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  const handleCopyPhone = () => {
+    navigator.clipboard.writeText(contactPhone);
+    setCopiedPhone(true);
+    setTimeout(() => setCopiedPhone(false), 2000);
   };
 
   const handleDispatchRaven = (e) => {
@@ -24,16 +32,16 @@ export default function Realm6Helheim({ onScrollToTop }) {
   };
 
   return (
-    <div className="p-5 md:p-6 norse-panel text-left space-y-4">
+    <div className="p-4 sm:p-5 md:p-6 norse-panel text-left space-y-3 sm:space-y-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#93c5fd]/30 pb-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 border-b border-[#93c5fd]/30 pb-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#93c5fd]/40 bg-[#0c121e] text-[#93c5fd] text-[11px] font-norse-sub mb-1">
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-[#93c5fd]/40 bg-[#0c121e] text-[#93c5fd] text-[10px] sm:text-[11px] font-norse-sub mb-1">
             <Wind className="w-3 h-3 text-[#93c5fd]" />
-            <span>REALM VI // HELHEIM — THE ROOTS OF YGGDRASIL</span>
+            <span>REALM VI // HELHEIM — THE ROOTS</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-norse-title text-[#f5eedb] uppercase m-0 leading-tight">
-            THE ANCIENT THRESHOLD
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-norse-title text-[#f5eedb] uppercase m-0 leading-tight">
+            COMMUNICATION THRESHOLD
           </h2>
         </div>
 
@@ -41,46 +49,75 @@ export default function Realm6Helheim({ onScrollToTop }) {
           onClick={() => {
             if (onScrollToTop) onScrollToTop();
           }}
-          className="norse-btn text-[11px] px-3 py-1.5 border-[#93c5fd]/50 text-[#e0f2fe] flex items-center gap-1.5 hover:border-[#38bdf8]"
+          className="norse-btn text-[10px] sm:text-[11px] px-2.5 sm:px-3 py-1 sm:py-1.5 border-[#93c5fd]/50 text-[#e0f2fe] flex items-center gap-1.5 hover:border-[#38bdf8]"
         >
           <ArrowUp className="w-3 h-3" />
-          <span>ASCEND TO ASGARD</span>
+          <span>ASCEND APEX</span>
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {/* Left Column: Direct Runic Contact & Raven Beacon */}
+        {/* Left Column: Direct Runic Contact & Phone/Email */}
         <div className="md:col-span-5 space-y-3">
           <div className="p-4 rounded-xl bg-[#0b101a]/90 border border-[#93c5fd]/20 space-y-3">
             <div className="flex items-center gap-1.5 text-[11px] font-norse-sub text-[#93c5fd]">
               <span className="text-sm">ᛟ</span>
-              <span>COMMUNE ACROSS THE NINE REALMS</span>
+              <span>COMMUNE WITH YASH PATANGE</span>
             </div>
 
             <p className="text-xs text-[#cbd5e1] font-norse-body leading-relaxed">
-              Seeking an architect for your next legendary digital realm, Python engine, or 3D WebGL voyage? Send word through the mists.
+              Seeking a Python Full Stack Developer or Software Engineer for scalable web architectures, Django/FastAPI services, and Generative AI pipelines? Send word across the Nine Realms.
             </p>
 
-            {/* 1-Click Copy Email Inscription */}
+            {/* Direct Phone Vessel */}
             <div className="pt-1">
               <span className="text-[10px] font-norse-sub text-slate-400 block mb-1">
-                COMMUNICATION VESSEL (CLICK TO COPY):
+                TELEPHONIC SIGNAL (CLICK TO CALL / COPY):
+              </span>
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="tel:+918180824463"
+                  className="flex-1 flex items-center justify-between p-2 rounded-lg bg-[#060a12] border border-[#93c5fd]/30 hover:border-[#38bdf8] transition-all"
+                >
+                  <span className="text-xs font-norse-mono text-[#93c5fd] flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-[#38bdf8]" />
+                    <span>{contactPhone}</span>
+                  </span>
+                  <span className="text-[9px] font-norse-sub text-[#38bdf8] hover:underline">
+                    CALL
+                  </span>
+                </a>
+                <button
+                  type="button"
+                  onClick={handleCopyPhone}
+                  className="px-2.5 py-2 rounded-lg bg-[#172554] text-[#93c5fd] border border-[#3b82f6]/40 text-[10px] font-norse-sub hover:bg-[#1e3a8a] transition-all"
+                >
+                  {copiedPhone ? 'COPIED!' : 'COPY'}
+                </button>
+              </div>
+            </div>
+
+            {/* 1-Click Copy Email Inscription */}
+            <div>
+              <span className="text-[10px] font-norse-sub text-slate-400 block mb-1">
+                RAVEN MAILBOX (CLICK TO COPY):
               </span>
               <button
                 type="button"
-                onClick={handleCopy}
-                className="w-full flex items-center justify-between p-2.5 rounded-lg bg-[#060a12] border border-[#93c5fd]/30 hover:border-[#38bdf8] transition-all"
+                onClick={handleCopyEmail}
+                className="w-full flex items-center justify-between p-2 rounded-lg bg-[#060a12] border border-[#93c5fd]/30 hover:border-[#38bdf8] transition-all"
               >
-                <span className="text-xs font-norse-mono text-[#93c5fd] truncate">
-                  {contactEmail}
+                <span className="text-xs font-norse-mono text-[#93c5fd] truncate flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-[#38bdf8]" />
+                  <span>{contactEmail}</span>
                 </span>
                 <span className="px-1.5 py-0.5 rounded text-[9px] font-norse-sub bg-[#172554] text-[#93c5fd] border border-[#3b82f6]/40 ml-1">
-                  {copied ? 'ENGRAVED!' : 'COPY'}
+                  {copiedEmail ? 'COPIED!' : 'COPY'}
                 </span>
               </button>
             </div>
 
-            {/* Direct Social Realms */}
+            {/* Direct Social Links */}
             <div className="pt-2 border-t border-white/10 flex flex-wrap items-center gap-2">
               <a
                 href="https://github.com/Yashpatange08"
@@ -102,12 +139,6 @@ export default function Realm6Helheim({ onScrollToTop }) {
               </a>
             </div>
           </div>
-
-          <div className="p-2.5 rounded bg-[#060a12]/80 border border-white/10 text-[10px] font-norse-mono text-slate-400 space-y-0.5">
-            <div>ROOT DEPTH // -75.00 METERS YGGDRASIL AXIS</div>
-            <div>COORDINATES // THE ABYSS OF HELHEIM</div>
-            <div>STATUS // ENCHANTED MISTS TRANQUIL</div>
-          </div>
         </div>
 
         {/* Right Column: Raven Post Dispatch Form */}
@@ -126,7 +157,7 @@ export default function Realm6Helheim({ onScrollToTop }) {
                   required
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  placeholder="Odin / Recruiter"
+                  placeholder="Recruiter / Collaborator"
                   className="w-full bg-[#060a12] border border-[#93c5fd]/30 focus:border-[#38bdf8] rounded px-3 py-1.5 text-xs font-norse-mono text-[#f5eedb] outline-none"
                 />
               </div>
@@ -137,7 +168,7 @@ export default function Realm6Helheim({ onScrollToTop }) {
                   required
                   value={formState.email}
                   onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  placeholder="your.rune@domain.com"
+                  placeholder="name@company.com"
                   className="w-full bg-[#060a12] border border-[#93c5fd]/30 focus:border-[#38bdf8] rounded px-3 py-1.5 text-xs font-norse-mono text-[#f5eedb] outline-none"
                 />
               </div>
@@ -150,7 +181,7 @@ export default function Realm6Helheim({ onScrollToTop }) {
                 required
                 value={formState.message}
                 onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                placeholder="Inscribe your collaboration inquiry or voyage proposition..."
+                placeholder="Inscribe your inquiry, opportunity, or project proposition..."
                 className="w-full bg-[#060a12] border border-[#93c5fd]/30 focus:border-[#38bdf8] rounded px-3 py-1.5 text-xs font-norse-mono text-[#f5eedb] outline-none resize-none"
               />
             </div>
@@ -165,7 +196,7 @@ export default function Realm6Helheim({ onScrollToTop }) {
 
             {sent && (
               <div className="text-center text-xs font-norse-sub text-[#4ade80] pt-0.5">
-                ✓ Raven in flight to your email client!
+                ✓ Opening default email dispatch to yashpatange08@gmail.com!
               </div>
             )}
           </form>
@@ -174,9 +205,9 @@ export default function Realm6Helheim({ onScrollToTop }) {
 
       {/* Footer Inscription */}
       <div className="pt-2 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-[11px] font-norse-sub text-slate-500 gap-1.5">
-        <div>© 2026 YASH PATANGE® // YGGDRASIL SACRED MONUMENT</div>
+        <div>© 2026 YASH PATANGE // SOFTWARE ENGINEER & PYTHON FULL STACK DEVELOPER</div>
         <div className="flex items-center gap-2">
-          <span>THE NINE REALMS ENDURE</span>
+          <span>YGGDRASIL ROOTS // HELHEIM</span>
           <span className="text-[#ffd700]">ᛟ ᚱ ᚦ</span>
         </div>
       </div>

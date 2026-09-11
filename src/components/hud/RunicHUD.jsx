@@ -1,13 +1,15 @@
 import React from 'react';
 import { Compass, Sparkles } from 'lucide-react';
+import NorseFooter from './NorseFooter';
+import profilePhoto from '../../assets/profile.jpg';
 
 const REALM_INFO = [
-  { id: 1, name: 'ASGARD', rune: 'ᚫ', subtitle: 'Home of the Aesir' },
-  { id: 2, name: 'VANAHEIM', rune: 'ᚹ', subtitle: 'Sacred Grove of the Vanir' },
-  { id: 3, name: 'MIDGARD', rune: 'ᛗ', subtitle: 'Realm of Men & Codebases' },
-  { id: 4, name: 'ALFHEIM', rune: 'ᛚ', subtitle: 'Sanctum of the Light Elves' },
-  { id: 5, name: 'MUSPELHEIM', rune: 'ᚠ', subtitle: 'Forge of Primordial Fire' },
-  { id: 6, name: 'HELHEIM', rune: 'ᚺ', subtitle: 'Roots of Yggdrasil' },
+  { id: 1, name: 'ASGARD', rune: 'ᚫ', subtitle: 'Executive Summary & Contact' },
+  { id: 2, name: 'VANAHEIM', rune: 'ᚹ', subtitle: 'Technical Competence (8 Domains)' },
+  { id: 3, name: 'MIDGARD', rune: 'ᛗ', subtitle: 'Featured Projects (3 Expeditions)' },
+  { id: 4, name: 'ALFHEIM', rune: 'ᛚ', subtitle: 'Verified Certifications (IBM & Coursera)' },
+  { id: 5, name: 'MUSPELHEIM', rune: 'ᚠ', subtitle: 'Academic Crucible (B.Tech & Diploma)' },
+  { id: 6, name: 'HELHEIM', rune: 'ᚺ', subtitle: 'Communication Threshold & Contact' },
 ];
 
 export default function RunicHUD({
@@ -23,20 +25,20 @@ export default function RunicHUD({
   const activeRealm = REALM_INFO[currentLevel - 1] || REALM_INFO[0];
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-50 flex flex-col justify-between p-4 md:p-6 select-none font-norse-sub">
+    <div className="fixed inset-0 pointer-events-none z-50 flex flex-col justify-between p-2 sm:p-4 md:p-6 select-none font-norse-sub">
       {/* Top Runic HUD Navigation Bar */}
-      <header className="flex items-center justify-between gap-4 w-full">
+      <header className="flex items-center justify-between gap-2 sm:gap-4 w-full">
         {/* Left Emblem & Current Realm Inscription */}
-        <div className="pointer-events-auto flex items-center gap-3 bg-[#0c101a]/90 backdrop-blur-md border border-[#d4af37]/40 px-4 py-2 rounded-xl shadow-2xl">
-          <span className="text-xl font-bold font-norse-title text-[#ffd700]">
+        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3 bg-[#0c101a]/95 sm:backdrop-blur-md border border-[#d4af37]/40 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl shadow-2xl max-w-[68vw] sm:max-w-none">
+          <span className="text-lg sm:text-xl font-bold font-norse-title text-[#ffd700] shrink-0">
             {activeRealm.rune}
           </span>
-          <div>
-            <div className="text-[10px] tracking-widest text-[#d4af37]">
-              YGGDRASIL DESCENT // YASH PATANGE
+          <div className="overflow-hidden">
+            <div className="text-[9px] sm:text-[10px] tracking-widest text-[#d4af37] truncate">
+              YGGDRASIL // YASH PATANGE
             </div>
-            <div className="text-xs sm:text-sm font-bold text-[#f5eedb] tracking-wider">
-              REALM 0{currentLevel}: {activeRealm.name} — <span className="text-[#cbd5e1] font-normal italic">{activeRealm.subtitle}</span>
+            <div className="text-xs sm:text-sm font-bold text-[#f5eedb] tracking-wider truncate">
+              REALM 0{currentLevel}: {activeRealm.name} <span className="hidden md:inline text-[#cbd5e1] font-normal italic">— {activeRealm.subtitle}</span>
             </div>
           </div>
         </div>
@@ -62,13 +64,30 @@ export default function RunicHUD({
           })}
         </nav>
 
-        {/* Right: Depth Counter */}
-        <div className="pointer-events-auto flex items-center gap-2">
-          <div className="flex flex-col items-end bg-[#0c101a]/90 backdrop-blur-md border border-white/10 px-3 py-1 rounded-lg">
+        {/* Right: Depth Counter & Profile Photo Avatar */}
+        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3">
+          {/* Depth Counter */}
+          <div className="flex flex-col items-end bg-[#0c101a]/90 sm:backdrop-blur-md border border-white/10 px-2.5 sm:px-3 py-1 rounded-lg">
             <span className="text-[9px] text-[#d4af37]">TREE DEPTH</span>
             <span className="text-xs font-norse-mono text-[#f5eedb] font-bold">
               -{depth.toFixed(1)}m Y
             </span>
+          </div>
+
+          {/* Profile Photo Medallion Avatar */}
+          <div className="relative group shrink-0" title="Yash Patange // Software Engineer">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#ffd700] via-[#f59e0b] to-[#d4af37] rounded-full blur-xs opacity-70 group-hover:opacity-100 transition duration-300 animate-pulse" />
+            <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full p-0.5 bg-[#10141f] border-2 border-[#ffd700] shadow-[0_0_15px_rgba(212,175,55,0.4)] overflow-hidden">
+              <img
+                src={profilePhoto}
+                alt="Yash Patange"
+                className="w-full h-full object-cover object-top rounded-full"
+              />
+            </div>
+            {/* Runic Sigil Badge */}
+            <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#16130b] border border-[#ffd700] flex items-center justify-center text-[7px] sm:text-[8px] font-bold text-[#ffd700] shadow">
+              ᛟ
+            </div>
           </div>
         </div>
       </header>
@@ -100,16 +119,12 @@ export default function RunicHUD({
         ))}
       </aside>
 
-      {/* Bottom Sub-Bar */}
-      <footer className="w-full flex items-center justify-between text-xs font-norse-sub text-slate-400 px-2">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#ffd700]" />
-          <span>YGGDRASIL WORLD TREE // SCROLL TO DESCEND THE REALMS</span>
-        </div>
-        <div className="hidden sm:block">
-          SACRED ROOTS: [X: 0.00, Y: -{depth.toFixed(2)}, Z: 14.00]
-        </div>
-      </footer>
+      {/* Themed Norse Footer Ribbon & Expandable Codex */}
+      <NorseFooter
+        currentLevel={currentLevel}
+        onJumpToLevel={onJumpToLevel}
+        depth={depth}
+      />
     </div>
   );
 }

@@ -56,6 +56,7 @@ export default function App() {
     level: 1,
   });
   const [hoveredBranch, setHoveredBranch] = useState(null);
+  const [scrollEl, setScrollEl] = useState(null);
   const scrollElementRef = useRef(null);
 
   const handleScrollUpdate = (data) => {
@@ -64,6 +65,7 @@ export default function App() {
 
   const handleInitScroll = (el) => {
     scrollElementRef.current = el;
+    setScrollEl(el);
   };
 
   const handleJumpToLevel = (levelIndex) => {
@@ -88,9 +90,16 @@ export default function App() {
         onJumpToLevel={handleJumpToLevel}
       />
 
-      {/* 3D WebGL Canvas */}
+      {/* Dedicated Non-Scrolling HTML Overlay Container for 3D Realm Cards */}
+      <div
+        id="norse-html-overlay"
+        className="absolute inset-0 pointer-events-none z-30 overflow-hidden"
+      />
+
+      {/* 3D WebGL Canvas with constrained DPR for mobile 60fps performance */}
       <Suspense fallback={<NorseLoader />}>
         <Canvas
+          dpr={[1, 1.5]}
           camera={{ position: [0, 0, 15.2], fov: 45 }}
           gl={{
             antialias: true,
@@ -145,6 +154,7 @@ export default function App() {
               secondaryColor="#f3e5ab"
               isAsgard={true}
               htmlOffset={[5.3, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm1Asgard />
             </RealmPlatform>
@@ -156,6 +166,7 @@ export default function App() {
               realmColor="#22c55e"
               secondaryColor="#86efac"
               htmlOffset={[-5.7, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm2Vanaheim />
             </RealmPlatform>
@@ -167,6 +178,7 @@ export default function App() {
               realmColor="#c29b38"
               secondaryColor="#ffd700"
               htmlOffset={[4.9, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm3Midgard />
             </RealmPlatform>
@@ -178,6 +190,7 @@ export default function App() {
               realmColor="#a5b4fc"
               secondaryColor="#38bdf8"
               htmlOffset={[-5.5, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm4Alfheim />
             </RealmPlatform>
@@ -189,6 +202,7 @@ export default function App() {
               realmColor="#f97316"
               secondaryColor="#ffd700"
               htmlOffset={[5.1, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm5Muspelheim />
             </RealmPlatform>
@@ -200,6 +214,7 @@ export default function App() {
               realmColor="#93c5fd"
               secondaryColor="#38bdf8"
               htmlOffset={[-5.3, 0, 0]}
+              scrollEl={scrollEl}
             >
               <Realm6Helheim onScrollToTop={() => handleJumpToLevel(1)} />
             </RealmPlatform>

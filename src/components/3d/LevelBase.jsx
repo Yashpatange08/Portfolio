@@ -85,14 +85,13 @@ export default function LevelBase({
       <Html
         center
         position={htmlOffset}
-        distanceFactor={13}
         zIndexRange={[100, 0]}
         style={{
           pointerEvents: 'auto',
           userSelect: 'none',
         }}
       >
-        <div className="w-[94vw] max-w-[1080px] transform-gpu transition-all duration-300">
+        <div className="w-[94vw] max-w-[1080px]">
           {children}
         </div>
       </Html>

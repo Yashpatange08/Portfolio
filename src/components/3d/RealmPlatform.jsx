@@ -1,26 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, useTexture } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-
-// Preload Asgard portrait texture to prevent runtime suspense disruptions
-useTexture.preload('/profile.jpg');
-
-function AsgardPortrait({ hovered }) {
-  const profileTexture = useTexture('/profile.jpg');
-  return (
-    <mesh position={[0, 0, 0.04]}>
-      <circleGeometry args={[1.75, 32]} />
-      <meshStandardMaterial
-        map={profileTexture}
-        roughness={0.4}
-        metalness={0.1}
-        emissive="#d4af37"
-        emissiveIntensity={hovered ? 0.3 : 0.1}
-      />
-    </mesh>
-  );
-}
 
 export default function RealmPlatform({
   position = [0, 0, 0],
@@ -29,12 +10,70 @@ export default function RealmPlatform({
   secondaryColor = "#f3e5ab",
   isAsgard = false,
   children,
-  htmlOffset = [4.6, 0, 0], // Sits elegantly to the right/left of the 3D medallion
+  htmlOffset = [4.6, 0, 0], // Sits elegantly to the right/left of the 3D medallion on desktop
+  scrollEl = null, // Drei scroll DOM element for forwarding gestures
 }) {
   const medallionRef = useRef();
   const ringRef = useRef();
   const brazierRef = useRef();
+  const cardContainerRef = useRef(null);
+  const touchStartYRef = useRef(0);
+
   const [hovered, setHovered] = useState(false);
+  const [isNearCamera, setIsNearCamera] = useState(true);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  );
+  const [portalNode, setPortalNode] = useState(() =>
+    typeof document !== 'undefined'
+      ? document.getElementById('norse-html-overlay') || document.body
+      : null
+  );
+
+  React.useEffect(() => {
+    const el = document.getElementById('norse-html-overlay') || document.body;
+    if (el) setPortalNode(el);
+
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleWheel = (e) => {
+    const el = cardContainerRef.current;
+    if (!el || !scrollEl) return;
+    const isScrollable = el.scrollHeight > el.clientHeight + 4;
+    const atTop = el.scrollTop <= 0;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 4;
+
+    if (!isScrollable || (e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
+      scrollEl.scrollTop += e.deltaY;
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      touchStartYRef.current = e.touches[0].clientY;
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 1 && scrollEl) {
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartYRef.current - currentY;
+      const el = cardContainerRef.current;
+      if (!el) return;
+
+      const isScrollable = el.scrollHeight > el.clientHeight + 6;
+      const atTop = el.scrollTop <= 0;
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 6;
+
+      if (!isScrollable || (deltaY > 0 && atBottom) || (deltaY < 0 && atTop)) {
+        scrollEl.scrollTop += deltaY * 1.5;
+        touchStartYRef.current = currentY;
+      }
+    }
+  };
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
@@ -46,13 +85,17 @@ export default function RealmPlatform({
 
     // Natural fire / aura flicker
     if (brazierRef.current) {
-      brazierRef.current.intensity = 2.6 + Math.sin(t * 8) * 0.4 + Math.cos(t * 11) * 0.3;
+      brazierRef.current.intensity = (isMobile ? 1.8 : 2.6) + Math.sin(t * 8) * 0.3;
     }
 
     // Gentle floating sway for the realm medallion
     if (medallionRef.current) {
       medallionRef.current.position.y = position[1] + Math.sin(t * 1.5) * 0.1;
     }
+
+    // Smooth visibility check based on camera vertical distance
+    const distY = Math.abs(state.camera.position.y - position[1]);
+    setIsNearCamera(distY < 16);
   });
 
   return (
@@ -96,14 +139,16 @@ export default function RealmPlatform({
           </group>
         ))}
 
-        {/* Brazier Firelight Light */}
-        <pointLight
-          ref={brazierRef}
-          position={[0, 0.8, 0]}
-          color={realmColor}
-          intensity={2.8}
-          distance={8}
-        />
+        {/* Brazier Firelight Light - active only when near camera to maximize mobile GPU FPS */}
+        {isNearCamera && (
+          <pointLight
+            ref={brazierRef}
+            position={[0, 0.8, 0]}
+            color={realmColor}
+            intensity={isMobile ? 1.8 : 2.8}
+            distance={8}
+          />
+        )}
       </group>
 
       {/* 2. Floating Circular World Medallion (Image 2 Drawing Style) */}
@@ -137,22 +182,17 @@ export default function RealmPlatform({
           </mesh>
         </group>
 
-        {/* Medallion Centerpiece: Either Asgard Portrait or Realm Elemental World Orb */}
-        {isAsgard ? (
-          <AsgardPortrait hovered={hovered} />
-        ) : (
-          // Other Realms: Glowing Elemental World Core
-          <mesh position={[0, 0, 0.04]}>
-            <circleGeometry args={[1.75, 32]} />
-            <meshStandardMaterial
-              color="#0d111a"
-              roughness={0.3}
-              metalness={0.7}
-              emissive={realmColor}
-              emissiveIntensity={hovered ? 0.4 : 0.15}
-            />
-          </mesh>
-        )}
+        {/* Medallion Centerpiece: Glowing Elemental World Core */}
+        <mesh position={[0, 0, 0.04]}>
+          <circleGeometry args={[1.75, 32]} />
+          <meshStandardMaterial
+            color="#0d111a"
+            roughness={0.3}
+            metalness={0.7}
+            emissive={realmColor}
+            emissiveIntensity={hovered ? 0.4 : 0.15}
+          />
+        </mesh>
 
         {/* 3D Sphere of the Realm World hovering at center */}
         <mesh position={[0, 0, 0.2]}>
@@ -182,21 +222,35 @@ export default function RealmPlatform({
       </group>
 
       {/* --- SLEEK HTML UI OVERLAY SITTING BESIDE THE 3D TREE --- */}
-      {/* Positioned with htmlOffset and center anchor so both the 3D Tree and Content are visible! */}
-      <Html
-        position={htmlOffset}
-        distanceFactor={13}
-        center
-        zIndexRange={[100, 0]}
-        style={{
-          pointerEvents: 'auto',
-          userSelect: 'none',
-        }}
-      >
-        <div className="w-[90vw] max-w-[600px] max-h-[85vh] overflow-y-auto transform-gpu transition-all duration-300 pr-1">
-          {children}
-        </div>
-      </Html>
+      {/* Positioned with effectiveHtmlOffset: centered on mobile, elegant side placement on desktop! */}
+      {portalNode && (
+        <Html
+          position={isMobile ? [-position[0], isAsgard ? -0.2 : 0, 0] : htmlOffset}
+          center
+          portal={{ current: portalNode }}
+          zIndexRange={[100, 0]}
+          style={{
+            pointerEvents: isNearCamera ? 'auto' : 'none',
+            opacity: isNearCamera ? 1 : 0,
+            transition: 'opacity 0.35s ease-in-out',
+            userSelect: 'none',
+          }}
+        >
+          <div
+            ref={cardContainerRef}
+            onWheel={handleWheel}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            className="w-[94vw] max-w-[420px] max-h-[70vh] sm:max-h-[78vh] md:w-[92vw] md:max-w-[660px] md:max-h-[85vh] overflow-y-auto px-0.5 sm:pr-1"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain',
+            }}
+          >
+            {children}
+          </div>
+        </Html>
+      )}
     </group>
   );
 }

@@ -1,182 +1,188 @@
 import React, { useState } from 'react';
-import { Flame, Hammer, Sparkles, Layers, ShieldAlert, ChevronRight } from 'lucide-react';
+import { Flame, Hammer, GraduationCap, Award, Calendar, BookOpen, CheckCircle, Sparkles } from 'lucide-react';
+
+const RESUME_EDUCATION = [
+  {
+    id: 0,
+    stage: 'INGOT I: THE FOUNDRY OF AI & MACHINE LEARNING',
+    degree: 'Diploma in AI & Machine Learning',
+    institution: 'CSMSS CSCOE (MSBTE)',
+    universityFullName: 'Maharashtra State Board of Technical Education',
+    score: '7.5 / 10 CGPA',
+    year: '2021 – 2024',
+    rune: 'ᛏ',
+    color: 'border-[#fb923c] text-[#fb923c]',
+    heat: 'TEMPERED IN MACHINE INTELLIGENCE',
+    summary:
+      'Rigorous technical foundation in artificial intelligence, neural networks, machine learning algorithms, computer vision, data structures, and Python data preprocessing pipelines.',
+    subjects: ['Artificial Intelligence', 'Machine Learning', 'Python Programming', 'Neural Networks', 'Computer Vision', 'Mathematics & Logic'],
+  },
+  {
+    id: 1,
+    stage: 'INGOT II: THE BLADE OF ADVANCED COMPUTING',
+    degree: 'B.Tech in Computer Science Engineering',
+    institution: 'CSMSS CSCOE (DBATU)',
+    universityFullName: 'Dr. Babasaheb Ambedkar Technological University',
+    score: '7.2 / 10 CGPA',
+    year: '2024 – 2027',
+    rune: 'ᚨ',
+    color: 'border-[#ffd700] text-[#ffd700]',
+    heat: 'FORGED IN MODERN SOFTWARE ARCHITECTURE',
+    summary:
+      'Advanced undergraduate degree in computer science engineering focusing on full-stack web platforms, database design, REST APIs, distributed logic, and generative AI systems.',
+    subjects: ['Software Engineering', 'Data Structures & Algorithms', 'Database Management', 'Full Stack Development', 'Distributed Systems', 'Computer Networks'],
+  },
+];
+
+const CORE_PROFICIENCIES = [
+  { name: 'PYTHON & BACKEND PIPELINES (DJANGO, FASTAPI, FLASK)', val: 95, heatColor: 'bg-gradient-to-r from-[#ea580c] to-[#ffd700]' },
+  { name: 'FRONTEND & REACT ARCHITECTURE (REACT.JS, TAILWIND)', val: 92, heatColor: 'bg-gradient-to-r from-[#38bdf8] to-[#60a5fa]' },
+  { name: 'GENERATIVE AI & AGENTIC SYSTEMS (RAG, LANGCHAIN, LLMS)', val: 94, heatColor: 'bg-gradient-to-r from-[#a855f7] to-[#ec4899]' },
+  { name: 'DATABASE DESIGN & REST APIS (SQL, MYSQL, MONGODB)', val: 93, heatColor: 'bg-gradient-to-r from-[#22c55e] to-[#4ade80]' },
+  { name: 'AI & MACHINE LEARNING (TENSORFLOW, KERAS, OPENCV)', val: 90, heatColor: 'bg-gradient-to-r from-[#f97316] to-[#fbbf24]' },
+];
 
 export default function Realm5Muspelheim() {
-  const [selectedForge, setSelectedForge] = useState(3);
+  const [selectedDegree, setSelectedDegree] = useState(1);
 
-  const forgedTiers = [
-    {
-      id: 0,
-      stage: 'INGOT I: PRIMORDIAL FOUNDATION',
-      degree: '10th SSC (Secondary School)',
-      institution: 'State Board of Education',
-      score: '91.8 %',
-      lore: 'Tempered in the fires of discipline; mastered foundational mathematics, scientific laws, and numerical logic.',
-      heat: 'WHITE HOT // DISTINCTION',
-      year: '2018',
-      rune: 'ᚠ',
-      color: 'border-[#f97316] text-[#ea580c]',
-    },
-    {
-      id: 1,
-      stage: 'INGOT II: THE ANVIL OF DIPLOMA',
-      degree: 'Diploma in Computer Engineering',
-      institution: 'Polytechnic Engineering Foundry',
-      score: '89.4 %',
-      lore: 'Forged practical engineering skills in C++, Java, relational database systems, hardware architecture, and networks.',
-      heat: 'BLAZING HEAT // FIRST CLASS',
-      year: '2021',
-      rune: 'ᚢ',
-      color: 'border-[#fbbf24] text-[#f59e0b]',
-    },
-    {
-      id: 2,
-      stage: 'INGOT III: THE BLADE OF UNDERGRAD',
-      degree: 'B.Tech in Computer Science',
-      institution: 'Faculty of Engineering & Technology',
-      score: '8.85 CGPA',
-      lore: 'Quenched in high-level computing, distributed network architectures, algorithms, WebGL graphics, and Python systems.',
-      heat: 'RUNIC FLAME // DISTINCTION',
-      year: '2024',
-      rune: 'ᚦ',
-      color: 'border-[#ef4444] text-[#ef4444]',
-    },
-    {
-      id: 3,
-      stage: 'INGOT IV: THE MASTERWORK OF M.TECH',
-      degree: 'M.Tech in Advanced Computer Science & AI',
-      institution: 'Postgraduate Institute of Technology',
-      score: '9.20 CGPA',
-      lore: 'The ultimate forging: advanced machine learning models, computer vision systems, spatial computing, and neural pipelines.',
-      heat: 'SURTR’S FIRE // TOP 1% HONORS',
-      year: '2026',
-      rune: 'ᚨ',
-      color: 'border-[#ffd700] text-[#ffd700]',
-    },
-  ];
-
-  const moltenAttributes = [
-    { name: 'PYTHON & SACRED BACKEND SYSTEMS', val: 96, heatColor: 'bg-gradient-to-r from-[#ea580c] to-[#ffd700]' },
-    { name: 'SPATIAL 3D & REACT THREE FIBER', val: 93, heatColor: 'bg-gradient-to-r from-[#ef4444] to-[#fb923c]' },
-    { name: 'ALGORITHMIC MASTERY & PROBLEM SOLVING', val: 94, heatColor: 'bg-gradient-to-r from-[#f97316] to-[#fde047]' },
-    { name: 'COMPUTER VISION & AI INTEGRATIONS', val: 91, heatColor: 'bg-gradient-to-r from-[#dc2626] to-[#f59e0b]' },
-    { name: 'DISTRIBUTED ARCHITECTURE & RELIABILITY', val: 95, heatColor: 'bg-gradient-to-r from-[#b91c1c] to-[#ea580c]' },
-  ];
+  const activeDegree = RESUME_EDUCATION[selectedDegree] || RESUME_EDUCATION[1];
 
   return (
-    <div className="p-6 md:p-10 norse-panel text-left space-y-6">
+    <div className="p-4 sm:p-6 md:p-8 norse-panel text-left space-y-4 sm:space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#f97316]/30 pb-5">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 border-b border-[#f97316]/30 pb-3 sm:pb-4">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded border border-[#f97316]/40 bg-[#1e0d06] text-[#fb923c] text-xs font-norse-sub mb-2">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded border border-[#f97316]/40 bg-[#1e0d06] text-[#fb923c] text-[11px] sm:text-xs font-norse-sub mb-1">
             <Flame className="w-3.5 h-3.5 text-[#ef4444] animate-pulse" />
-            <span>REALM V // MUSPELHEIM — FORGE OF PRIMORDIAL FIRE</span>
+            <span>REALM V // MUSPELHEIM — FORGE</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-bold font-norse-title text-[#f5eedb] uppercase m-0">
-            THE FORGED SKILL TREE
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold font-norse-title text-[#f5eedb] uppercase m-0 tracking-wide">
+            ACADEMIC CRUCIBLE
           </h2>
         </div>
 
-        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#200c06] border border-[#f97316]/40 text-xs font-norse-sub text-[#fdba74]">
-          <Hammer className="w-4 h-4 text-[#fbbf24]" />
-          <span>SCORES FORGED IN MOLTEN IRON</span>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#200c06] border border-[#f97316]/40 text-[10px] sm:text-xs font-norse-sub text-[#fdba74]">
+          <GraduationCap className="w-3.5 h-3.5 text-[#ffd700]" />
+          <span>VERIFIED DEGREES</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Side: 4 Forged Tiers */}
-        <div className="lg:col-span-7 space-y-3">
-          <div className="text-xs font-norse-sub text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-            <Layers className="w-4 h-4 text-[#f97316]" />
-            <span>SELECT FORGE MILESTONE (TEMPERED PROGRESSION)</span>
-          </div>
-
-          <div className="space-y-3 relative before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-[#ffd700] via-[#f97316] to-[#ef4444]">
-            {forgedTiers.map((t) => {
-              const active = selectedForge === t.id;
-              return (
-                <div
-                  key={t.id}
-                  onClick={() => {
-                    setSelectedForge(t.id);
-                  }}
-                  className={`cursor-pointer pl-6 p-4 rounded-xl transition-all duration-300 border flex flex-col justify-between ${
-                    active
-                      ? 'bg-[#220d06] border-[#f97316] glow-ember scale-[1.01]'
-                      : 'bg-[#140b08]/90 border-white/10 hover:border-[#f97316]/50 hover:bg-[#1a0e08]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xl font-bold font-norse-title text-[#fbbf24]">
-                      {t.rune}
-                    </span>
-                    <span className={`text-xs font-norse-sub font-bold px-2.5 py-0.5 rounded border bg-[#0d0705] ${t.color}`}>
-                      {t.score}
-                    </span>
+      {/* Degree Selector Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {RESUME_EDUCATION.map((edu, idx) => {
+          const isSelected = selectedDegree === idx;
+          return (
+            <button
+              key={edu.id}
+              onClick={() => setSelectedDegree(idx)}
+              className={`p-3.5 rounded-xl text-left transition-all border flex items-center justify-between ${
+                isSelected
+                  ? 'bg-[#220d06] border-[#f97316] shadow-[0_0_15px_rgba(249,115,22,0.35)]'
+                  : 'bg-[#10141d]/90 border-white/10 hover:border-[#f97316]/40'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`text-2xl font-bold font-norse-title ${edu.color}`}>
+                  {edu.rune}
+                </span>
+                <div>
+                  <div className="text-xs font-bold font-norse-sub text-[#f5eedb]">
+                    {edu.degree}
                   </div>
-
-                  <h3 className="text-base sm:text-lg font-bold font-norse-sub text-[#f5eedb] mt-1 uppercase tracking-wide">
-                    {t.degree}
-                  </h3>
-                  <div className="text-xs text-[#fdba74] font-norse-body mt-0.5">
-                    {t.institution} ({t.year})
+                  <div className="text-[10px] font-norse-mono text-[#fdba74]">
+                    {edu.institution} // {edu.year}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-bold font-norse-mono text-[#ffd700] block">
+                  {edu.score}
+                </span>
+                <span className="text-[9px] font-norse-sub text-slate-400">
+                  {isSelected ? 'SELECTED' : 'INSPECT'}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Active Degree Detail Card */}
+      <div className="p-5 rounded-xl bg-[#140b07]/95 border border-[#f97316]/40 space-y-4 shadow-xl">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <span className="text-[10px] font-norse-mono text-[#fb923c] tracking-widest font-bold">
+              {activeDegree.stage}
+            </span>
+            <h3 className="text-lg font-bold font-norse-title text-[#f5eedb] uppercase mt-0.5">
+              {activeDegree.degree}
+            </h3>
+            <div className="text-xs font-norse-sub text-[#f5eedb] mt-0.5 flex flex-wrap items-center gap-2">
+              <span className="text-[#ffd700] font-bold">{activeDegree.institution}</span>
+              <span className="text-white/30">•</span>
+              <span className="text-slate-300 font-norse-body">{activeDegree.universityFullName}</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="px-3 py-1.5 rounded-lg bg-[#251007] border border-[#f97316]/40 text-right">
+              <div className="text-[9px] font-norse-sub text-[#fdba74]">GRADE ACHIEVED</div>
+              <div className="text-sm font-bold font-norse-mono text-[#ffd700]">{activeDegree.score}</div>
+            </div>
+            <div className="px-3 py-1.5 rounded-lg bg-[#251007] border border-[#f97316]/40 text-right">
+              <div className="text-[9px] font-norse-sub text-[#fdba74]">TIMELINE</div>
+              <div className="text-sm font-bold font-norse-mono text-[#f5eedb]">{activeDegree.year}</div>
+            </div>
           </div>
         </div>
 
-        {/* Right Side: Molten Anvil Telemetry & Stats */}
-        <div className="lg:col-span-5 space-y-4">
-          {/* Anvil Telemetry */}
-          <div className="p-5 rounded-xl bg-[#1a0b06]/90 border border-[#f97316]/30 space-y-3">
-            <div className="flex items-center justify-between text-xs font-norse-sub">
-              <span className="text-[#fbbf24] font-bold">FORGE TEMPER STATUS</span>
-              <span className="text-[#fdba74]">{forgedTiers[selectedForge].year}</span>
-            </div>
+        <p className="text-xs sm:text-sm text-[#cbd5e1] font-norse-body leading-relaxed">
+          {activeDegree.summary}
+        </p>
 
-            <h4 className="text-lg font-bold font-norse-sub text-[#f5eedb] uppercase">
-              {forgedTiers[selectedForge].degree}
-            </h4>
-
-            <p className="text-sm text-[#cbd5e1] font-norse-body leading-relaxed italic">
-              "{forgedTiers[selectedForge].lore}"
-            </p>
-
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs font-norse-sub">
-              <span className="text-slate-400">HEAT INDEX:</span>
-              <span className="text-[#ffd700] font-bold">{forgedTiers[selectedForge].heat}</span>
-            </div>
+        {/* Subjects Studied */}
+        <div>
+          <span className="text-[10px] font-norse-sub text-[#ffd700] tracking-wider uppercase block mb-1.5">
+            CORE SYLLABUS & APPLIED COMPETENCIES:
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {activeDegree.subjects.map((sub, idx) => (
+              <span
+                key={idx}
+                className="px-2.5 py-0.5 rounded text-[10px] font-norse-mono bg-[#220f08] border border-[#f97316]/30 text-[#fdba74]"
+              >
+                ✦ {sub}
+              </span>
+            ))}
           </div>
+        </div>
+      </div>
 
-          {/* Molten Skill Meters */}
-          <div className="p-5 rounded-xl bg-[#140b08]/90 border border-white/10 space-y-3.5">
-            <div className="flex items-center justify-between text-xs font-norse-sub">
-              <div className="flex items-center gap-2">
-                <Flame className="w-4 h-4 text-[#f97316]" />
-                <span className="font-bold text-[#f5eedb]">WARRIOR STAT SHEET</span>
+      {/* Engineering Heat Gauges */}
+      <div className="p-4 rounded-xl bg-[#0f141d]/90 border border-white/10 space-y-2.5">
+        <div className="flex items-center justify-between text-xs font-norse-sub text-[#fdba74] border-b border-white/10 pb-1.5">
+          <span className="flex items-center gap-1.5 font-bold">
+            <Hammer className="w-3.5 h-3.5 text-[#f97316]" />
+            <span>RESUME TECHNICAL PROFICIENCY GAUGES</span>
+          </span>
+          <span className="text-[10px] font-norse-mono text-slate-400">PRACTICAL PRODUCTION READY</span>
+        </div>
+
+        <div className="space-y-2">
+          {CORE_PROFICIENCIES.map((p, idx) => (
+            <div key={idx} className="space-y-1">
+              <div className="flex justify-between text-[10px] font-norse-sub text-[#cbd5e1]">
+                <span>{p.name}</span>
+                <span className="font-norse-mono font-bold text-[#ffd700]">{p.val}%</span>
               </div>
-              <span className="text-[#ffd700]">LVL 99 FORGED</span>
+              <div className="w-full bg-[#1e1310] h-1.5 rounded-full overflow-hidden border border-white/5">
+                <div
+                  className={`h-full ${p.heatColor} rounded-full transition-all duration-700`}
+                  style={{ width: `${p.val}%` }}
+                />
+              </div>
             </div>
-
-            <div className="space-y-3">
-              {moltenAttributes.map((st, i) => (
-                <div key={i} className="space-y-1">
-                  <div className="flex justify-between text-xs font-norse-sub">
-                    <span className="text-[#cbd5e1]">{st.name}</span>
-                    <span className="text-[#ffd700] font-bold">{st.val}%</span>
-                  </div>
-                  <div className="w-full h-2 bg-[#090503] rounded-full overflow-hidden border border-[#f97316]/20">
-                    <div
-                      className={`h-full ${st.heatColor} transition-all duration-700`}
-                      style={{ width: `${st.val}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

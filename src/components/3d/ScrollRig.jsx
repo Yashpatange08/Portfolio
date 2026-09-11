@@ -18,9 +18,11 @@ export default function ScrollRig({ onScrollUpdate }) {
       Math.min(delta * 4.2, 1)
     );
 
-    // Dynamic camera sway and gentle X tracking as the branch zigzags
-    const lateralSway = Math.sin(scroll.offset * Math.PI * 5) * 0.8;
-    const targetX = (state.pointer.x * 0.8) + lateralSway;
+    // On mobile viewports (< 768px), lock camera X to 0 to prevent card clipping and disorientation.
+    // On desktop, retain elegant dynamic lateral sway tracking the zigzagging branches.
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const lateralSway = isMobile ? 0 : Math.sin(scroll.offset * Math.PI * 5) * 0.8;
+    const targetX = isMobile ? 0 : (state.pointer.x * 0.8) + lateralSway;
 
     state.camera.position.x = THREE.MathUtils.lerp(
       state.camera.position.x,
